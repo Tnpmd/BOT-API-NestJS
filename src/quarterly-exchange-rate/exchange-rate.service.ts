@@ -27,15 +27,10 @@ export class ExchangeRateService {
     // แปลง year จาก string เป็น number
     const yearNumber = Number(year);
 
-    // ตรวจสอบว่า year เป็นตัวเลขหรือไม่
-    if (Number.isNaN(yearNumber)) {
-      throw new BadRequestException('Invalid year.');
-    }
-
-    // ตรวจสอบว่าปีอยู่ในช่วงที่ BOT มีข้อมูล
-    if (yearNumber < 2002) {
-      throw new BadRequestException('Invalid year.');
-    }
+    // ตรวจสอบว่า year เป็นจำนวนเต็มและไม่น้อยกว่า 2002
+  if (!Number.isInteger(yearNumber) || yearNumber < 2002) {
+    throw new BadRequestException('Invalid year.');
+  }
 
     // ตรวจสอบว่า quarter เป็น Q1-Q4
     if (!['Q1', 'Q2', 'Q3', 'Q4'].includes(quarter)) {
