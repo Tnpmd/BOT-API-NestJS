@@ -1,5 +1,5 @@
 import { ExchangeRateService } from './exchange-rate.service.js';
-import { jest } from '@jest/globals'
+import { jest } from '@jest/globals';
 
 describe('ExchangeRateService', () => {
   let service: ExchangeRateService;
@@ -38,6 +38,16 @@ describe('ExchangeRateService', () => {
       expect(() =>
         service.validateQuery({
           year: 'abc',
+          quarter: 'Q1',
+        }),
+      ).toThrow('Invalid year.');
+    });
+
+    // ตรวจสอบกรณีที่ year ไม่ใช่จำนวนเต็ม
+    it('should throw error when year is not an integer', () => {
+      expect(() =>
+        service.validateQuery({
+          year: '2025.5',
           quarter: 'Q1',
         }),
       ).toThrow('Invalid year.');
@@ -135,12 +145,9 @@ describe('ExchangeRateService', () => {
   });
 
   // Test การประมวลผลอัตราแลกเปลี่ยนรายไตรมาสทั้งหมด
-    // Test การประมวลผลอัตราแลกเปลี่ยนรายไตรมาสทั้งหมด
   describe('getQuarterlyExchangeRate', () => {
-
     // ตรวจสอบกรณีที่เรียกข้อมูลและคำนวณได้สำเร็จ
     it('should return quarterly exchange rate data', async () => {
-
       // จำลองข้อมูลที่ได้จาก BOT API
       global.fetch = jest.fn().mockResolvedValue({
         ok: true,
@@ -190,14 +197,11 @@ describe('ExchangeRateService', () => {
       expect(result.previousQuarter.averageRate).toBe(34.2);
 
       // ตรวจสอบเปอร์เซ็นต์การเปลี่ยนแปลง
-      expect(result.changeFromPreviousQuarter).toBeCloseTo(
-        -0.7187134502923976,
-      );
+      expect(result.changeFromPreviousQuarter).toBeCloseTo(-0.7187134502923976);
     });
 
     // ตรวจสอบกรณีที่ BOT API ตอบกลับไม่สำเร็จ
     it('should throw error when BOT API fails', async () => {
-
       // จำลอง BOT API ตอบกลับด้วยสถานะไม่สำเร็จ
       global.fetch = jest.fn().mockResolvedValue({
         ok: false,
@@ -213,7 +217,6 @@ describe('ExchangeRateService', () => {
 
     // ตรวจสอบกรณีที่ไม่พบข้อมูลของไตรมาส
     it('should throw error when exchange rate data is not found', async () => {
-
       // จำลอง BOT API ตอบกลับสำเร็จแต่ไม่มีข้อมูล
       global.fetch = jest.fn().mockResolvedValue({
         ok: true,
