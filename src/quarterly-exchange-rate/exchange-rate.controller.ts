@@ -3,7 +3,7 @@ import { ExchangeRateService } from './exchange-rate.service.js';
 import { ExchangeRateQueryDto } from './dto/exchange-rate-query.dto.js';
 
 // Controller สำหรับรับ Request ของ Quarterly Exchange Rate
-@Controller('quarterly-change')
+@Controller('exchange-rates/quarterly-change')
 export class ExchangeRateController {
   constructor(
     private readonly exchangeRateService: ExchangeRateService,
